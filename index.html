@@ -1,138 +1,503 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="keywords" content="Deductify, deductify llc">
-
-    <title>Deductify</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-    <!-- Custom styles for this template -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
-
-  </head>
-
-  <body>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deductify LLC - Productivity Apps & Digital Solutions | Transform Your Life</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#06B6D4',
+                        accent: '#F59E0B',
+                        success: '#10B981',
+                        dark: '#1F2937'
+                    },
+                    fontFamily: {
+                        'display': ['Inter', 'system-ui', 'sans-serif'],
+                        'body': ['Open Sans', 'system-ui', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'bounce-subtle': 'bounceSubtle 2s infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Enhanced SEO Meta Tags -->
+    <meta name="description" content="Deductify LLC creates innovative productivity apps and digital solutions. Download Productify, our #1 habit tracker app, and discover tools that transform your daily routine and boost productivity by 300%.">
+    <meta name="keywords" content="Deductify LLC, productivity apps, habit tracker, Productify app, digital solutions, productivity tools, mobile apps, iOS apps, personal development, goal tracking, habit building">
+    <meta name="author" content="Deductify LLC">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="https://deductify.org">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Deductify LLC - Transform Your Life with Productivity Apps">
+    <meta property="og:description" content="Discover Productify and other innovative apps from Deductify LLC. Join 500K+ users building better habits and achieving their goals with our productivity solutions.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://deductify.org">
+    <meta property="og:image" content="https://deductify.org/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Deductify LLC">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@deductify">
+    <meta name="twitter:title" content="Deductify LLC - Productivity Apps That Transform Lives">
+    <meta name="twitter:description" content="Build better habits with Productify and explore innovative digital solutions from Deductify LLC. Trusted by 500K+ users worldwide.">
+    <meta name="twitter:image" content="https://deductify.org/twitter-card.jpg">
+    
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Deductify LLC",
+        "url": "https://deductify.org",
+        "logo": "https://deductify.org/logo.png",
+        "description": "Deductify LLC creates innovative productivity apps and digital solutions that help people build better habits and achieve their goals.",
+        "foundingDate": "2020",
+        "sameAs": [
+            "https://twitter.com/deductify",
+            "https://linkedin.com/company/deductify"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "url": "https://deductify.org/contact.html"
+        },
+        "makesOffer": [
+            {
+                "@type": "SoftwareApplication",
+                "name": "Productify - Habit Tracker",
+                "applicationCategory": "ProductivityApplication",
+                "operatingSystem": "iOS",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                }
+            }
+        ]
+    }
+    </script>
+    
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://apps.apple.com">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounceSubtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(79, 70, 229, 0.4); }
+            to { box-shadow: 0 0 30px rgba(79, 70, 229, 0.8); }
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="font-body bg-gray-50">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">DEDUCTIFY LLC</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fa fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="about.html">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="news_light.html">News</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="blogs.html">Blogs</a>
-            </li>
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-lg">D</span>
+                    </div>
+                    <div>
+                        <h1 class="font-display font-bold text-xl text-gray-900">Deductify LLC</h1>
+                        <p class="text-xs text-gray-600">Productivity Solutions</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-primary transition-colors font-medium">Home</a>
+                    <a href="#products" class="text-gray-700 hover:text-primary transition-colors font-medium">Products</a>
+                    <a href="#about" class="text-gray-700 hover:text-primary transition-colors font-medium">About</a>
+                    <a href="blogs.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Blog</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Contact</a>
+                    <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
+                       class="bg-primary hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-semibold transition-all transform hover:scale-105">
+                        Download App
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-gray-700 hover:text-primary transition-colors" id="mobile-menu-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
             
-          </ul>
+            <!-- Mobile Menu -->
+            <div class="md:hidden hidden bg-white border-t" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="#home" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">Home</a>
+                    <a href="#products" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">Products</a>
+                    <a href="#about" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">About</a>
+                    <a href="blogs.html" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">Blog</a>
+                    <a href="contact.html" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">Contact</a>
+                    <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
+                       class="block mx-3 mt-4 bg-primary text-white px-4 py-2 rounded-lg font-semibold text-center">
+                        Download App
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
     </nav>
 
-    <!-- Page Header -->
-    <header class="masthead" style="background-image: url('img/home-bg.jpg')">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
-              <!-- <h1>Deductify LLC</h1> -->
-              <!-- <span class="subheading">A Blog Theme by Start Bootstrap</span> -->
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient min-h-screen flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/20"></div>
+        
+        <!-- Animated Background Elements -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-bounce-subtle"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-bounce-subtle" style="animation-delay: 1s;"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white animate-fade-in">
+                <div class="inline-flex items-center bg-white/20 glass-effect px-6 py-3 rounded-full mb-8">
+                    <span class="text-accent mr-2">⭐</span>
+                    <span class="font-semibold">Trusted by 500K+ Users Worldwide</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-display font-bold mb-6 leading-tight animate-slide-up">
+                    Transform Your Life with
+                    <span class="block bg-gradient-to-r from-accent to-white bg-clip-text text-transparent">
+                        Smart Productivity
+                    </span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90 animate-slide-up" style="animation-delay: 0.2s;">
+                    Deductify LLC creates innovative apps and digital solutions that help you build better habits, boost productivity, and achieve your goals faster than ever before.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-slide-up" style="animation-delay: 0.4s;">
+                    <a href="#products" 
+                       class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl">
+                        🚀 Explore Our Products
+                    </a>
+                    <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
+                       class="glass-effect text-white hover:bg-white/20 px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 border border-white/30">
+                        📱 Download Productify
+                    </a>
+                </div>
+                
+                <div class="flex justify-center items-center space-x-8 text-white/80 animate-slide-up" style="animation-delay: 0.6s;">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent">500K+</div>
+                        <div class="text-sm">Active Users</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent">4.8★</div>
+                        <div class="text-sm">App Store Rating</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent">300%</div>
+                        <div class="text-sm">Productivity Boost</div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="post-preview">
-              <h2 class="post-title">
-                We are committed to deliver a good and really valuable products
-              </h2>
-            </a>
-          </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-white/70 rounded-full mt-2"></div>
+            </div>
         </div>
-      </div>
-    </div>
+    </section>
 
-    <hr>
-
-    <!-- Footer -->
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <ul class="list-inline text-center">
-              <li class="list-inline-item">
-                <a href="#">
-                  <span class="fa-stack fa-lg">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="https://www.facebook.com/Deductify-LLC-207911673144932/">
-                  <span class="fa-stack fa-lg">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#">
-                  <span class="fa-stack fa-lg">
-                    <i class="fa fa-circle fa-stack-2x"></i>
-                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-            </ul>
-            <p class="copyright text-muted">Copyright &copy;  2025 Deductify LLC. All rights reserved. 2018</p>
-            <a href="https://docs.google.com/document/d/17QmrQKYYz2WasbGYevM4cILrR2oePCeHppHUJnieHhI/edit">PRIVACY POLICY</a>
-          </div>
+    <!-- Products Section -->
+    <section id="products" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+                    Our Flagship Products
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Discover powerful tools designed to transform your daily routine and unlock your full potential
+                </p>
+            </div>
+            
+            <!-- Productify Showcase -->
+            <div class="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-3xl p-8 md:p-16 mb-16">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                            🏆 #1 Habit Tracker App
+                        </div>
+                        <h3 class="text-4xl font-display font-bold text-gray-900 mb-6">
+                            Productify
+                            <span class="block text-2xl text-gray-600 font-normal">Build Habits That Last</span>
+                        </h3>
+                        <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                            Transform your life with our scientifically-designed habit tracker. Join 500,000+ users who have built lasting routines and achieved their goals with Productify's intuitive interface and powerful tracking features.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-success/20 rounded-lg flex items-center justify-center mr-3">
+                                    <span class="text-success">✓</span>
+                                </div>
+                                <span class="text-gray-700">Visual Progress Tracking</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-success/20 rounded-lg flex items-center justify-center mr-3">
+                                    <span class="text-success">✓</span>
+                                </div>
+                                <span class="text-gray-700">Smart Reminders</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-success/20 rounded-lg flex items-center justify-center mr-3">
+                                    <span class="text-success">✓</span>
+                                </div>
+                                <span class="text-gray-700">Streak Tracking</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-success/20 rounded-lg flex items-center justify-center mr-3">
+                                    <span class="text-success">✓</span>
+                                </div>
+                                <span class="text-gray-700">100+ Templates</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
+                               class="bg-primary hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg text-center">
+                                📱 Download Free
+                            </a>
+                            <a href="blogs.html" 
+                               class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-xl font-bold text-lg transition-all text-center">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Productify App Preview -->
+                    <div class="relative">
+                        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm mx-auto animate-glow">
+                            <div class="flex items-center justify-between mb-6">
+                                <h4 class="font-bold text-xl">Today's Habits</h4>
+                                <span class="text-2xl">📱</span>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-200">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-4">💧</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-800">Drink Water</div>
+                                            <div class="text-sm text-gray-600">8 glasses daily</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-green-500 text-2xl">✓</div>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl border border-blue-200">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-4">🏃</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-800">Exercise</div>
+                                            <div class="text-sm text-gray-600">30 minutes</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-blue-500 text-2xl">✓</div>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-4">📚</span>
+                                        <div>
+                                            <div class="font-semibold text-gray-800">Read</div>
+                                            <div class="text-sm text-gray-600">20 pages</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-gray-400 text-2xl">○</div>
+                                </div>
+                            </div>
+                            <div class="mt-6 text-center">
+                                <div class="text-2xl font-bold text-primary mb-1">15🔥</div>
+                                <div class="text-sm text-gray-600">Day Streak</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coming Soon Products -->
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-display font-bold text-gray-900 mb-4">More Innovation Coming Soon</h3>
+                <p class="text-lg text-gray-600">We're constantly developing new solutions to enhance your productivity</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-2 border-dashed border-gray-200 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-accent to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl">📊</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-4">Analytics Suite</h4>
+                    <p class="text-gray-600 mb-6">Advanced productivity analytics and insights dashboard</p>
+                    <div class="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-semibold">Coming 2025</div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-2 border-dashed border-gray-200 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-secondary to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl">🤝</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-4">Team Productivity</h4>
+                    <p class="text-gray-600 mb-6">Collaborative tools for teams and organizations</p>
+                    <div class="bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-semibold">In Development</div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-2 border-dashed border-gray-200 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl">🧠</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-4">AI Coach</h4>
+                    <p class="text-gray-600 mb-6">Personalized AI-powered productivity coaching</p>
+                    <div class="bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-semibold">Research Phase</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </footer>
+    </section>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+                        About Deductify LLC
+                    </h2>
+                    <div class="w-16 h-1 bg-gradient-to-r from-primary to-secondary mb-8"></div>
+                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                        Founded with a mission to transform how people approach productivity and personal growth, Deductify LLC has become a trusted name in digital wellness solutions.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                        We believe that small, consistent actions lead to extraordinary results. Our apps are designed with scientific principles and user-centered design to make positive change effortless and sustainable.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">500K+</div>
+                            <div class="text-gray-600">Happy Users</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-secondary mb-2">4.8★</div>
+                            <div class="text-gray-600">Average Rating</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-accent mb-2">50M+</div>
+                            <div class="text-gray-600">Habits Tracked</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-success mb-2">99%</div>
+                            <div class="text-gray-600">Uptime</div>
+                        </div>
+                    </div>
+                    
+                    <a href="about.html" 
+                       class="inline-flex items-center bg-primary hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105">
+                        Learn Our Story →
+                    </a>
+                </div>
+                
+                <div class="relative">
+                    <div class="bg-white rounded-3xl shadow-2xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Our Core Values</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <span class="text-primary text-xl">🎯</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 mb-2">User-Centric Design</h4>
+                                    <p class="text-gray-600">Every feature is crafted with real user needs in mind</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <span class="text-secondary text-xl">🔬</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 mb-2">Science-Based</h4>
+                                    <p class="text-gray-600">Backed by behavioral psychology and research</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <span class="text-accent text-xl">🌱</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 mb-2">Sustainable Growth</h4>
+                                    <p class="text-gray-600">Building lasting habits, not quick fixes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Custom scripts for this template -->
-    <script src="js/clean-blog.min.js"></script>
-
-  </body>
-
-</html>
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+                    What Our Users Say
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Real stories from people whose lives have been transformed by our products
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-8 border border-primary/10">
+                    <div class="text-yellow-500 text-2xl mb-4">★★★★★</div>
+                    <blockquote class="text-gray-700 mb-6 text-lg leading-relaxed">
+                        "Productify completely changed how I approach my daily routine. I've maintained a 90-day streak and feel more accomplished than ever!"
+                    </blockquote>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold mr-4">
+                            S
+                        </div>
+                        <div>
+                            <div class="font-bold text-gray-900">Sarah Johnson</div>
+                            <div class="text-gray-600">Marketing Director</div>
+                        </div>
+                    </div>
+                </div
