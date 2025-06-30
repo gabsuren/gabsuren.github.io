@@ -1,744 +1,190 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deductify LLC - Productify Habit Tracker App | Build Better Habits Daily</title>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-798748196"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'AW-798748196');
-</script>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4F46E5',
-                        secondary: '#06B6D4',
-                        accent: '#F59E0B',
-                        success: '#10B981',
-                        dark: '#1F2937'
-                    },
-                    fontFamily: {
-                        'display': ['Inter', 'system-ui', 'sans-serif'],
-                        'body': ['Open Sans', 'system-ui', 'sans-serif']
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.6s ease-in-out',
-                        'slide-up': 'slideUp 0.8s ease-out',
-                        'bounce-subtle': 'bounceSubtle 2s infinite',
-                        'glow': 'glow 2s ease-in-out infinite alternate'
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Enhanced SEO Meta Tags -->
-    <meta name="description" content="Download Productify, the #1 habit tracker app by Deductify LLC. Build lasting habits with AI-powered planning, streak tracking, and smart reminders. Join 500K+ users transforming their lives daily.">
-    <meta name="keywords" content="habit tracker app, Productify, daily habits, streak tracking, AI habit planner, productivity app, Deductify LLC, iOS habit tracker, habit building, goal tracking, morning routine, cardio habits">
-    <meta name="author" content="Deductify LLC">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-    <link rel="canonical" href="https://deductify.org">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Productify - #1 Habit Tracker App | Build Better Habits Daily">
-    <meta property="og:description" content="Transform your life with Productify habit tracker. AI-powered planning, streak tracking, and smart reminders. 4.5★ rated with 500K+ active users.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://deductify.org">
-    <meta property="og:image" content="https://deductify.org/productify-social-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="Deductify LLC">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@deductify">
-    <meta name="twitter:title" content="Productify - Transform Your Daily Habits | Deductify LLC">
-    <meta name="twitter:description" content="Join 500K+ users building better habits with Productify. AI planning, streak tracking, smart reminders. Download free on iOS.">
-    <meta name="twitter:image" content="https://deductify.org/productify-twitter-image.jpg">
-    
-    <!-- Enhanced Schema Markup -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Deductify LLC",
-        "url": "https://deductify.org",
-        "logo": "https://deductify.org/logo.png",
-        "description": "Deductify LLC creates Productify, the #1 habit tracker app. Build lasting habits with AI-powered planning, streak tracking, and smart reminders.",
-        "foundingDate": "2020",
-        "sameAs": [
-            "https://apps.apple.com/us/app/habit-tracker-productify/id1389900237",
-            "https://twitter.com/deductify",
-            "https://linkedin.com/company/deductify"
-        ],
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "contactType": "customer service",
-            "email": "contact@deductify.org",
-            "url": "https://deductify.org/contact.html"
-        },
-        "makesOffer": [
-            {
-                "@type": "SoftwareApplication",
-                "name": "Productify - Habit Tracker",
-                "applicationCategory": "ProductivityApplication",
-                "operatingSystem": ["iOS", "iPhone", "iPad", "Apple Watch"],
-                "aggregateRating": {
-                    "@type": "AggregateRating",
-                    "ratingValue": "4.5",
-                    "reviewCount": "471"
-                },
-                "offers": {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "USD",
-                    "availability": "https://schema.org/InStock"
-                },
-                "downloadUrl": "https://apps.apple.com/us/app/habit-tracker-productify/id1389900237",
-                "description": "AI-powered habit tracker with streak tracking, smart reminders, and comprehensive statistics. Build lasting habits with predefined templates and custom goals."
-            }
-        ]
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover daily habits to improve your life with our blog on water drinking, walking, and more. Download Productify, the ultimate AI habit tracker app for iOS.">
+  <meta name="keywords" content="daily habits, habit tracker, productify, water drinking, walking, productivity, iOS app, self-improvement">
+  <meta name="author" content="Productify Team">
+  <title>Daily Habits & Productify - AI Habit Tracker App</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Daily Habits & Productify - AI Habit Tracker App">
+  <meta property="og:description" content="Explore tips on daily habits like water drinking and walking. Download Productify, the AI-powered habit tracker for iOS.">
+  <meta property="og:image" content="https://yourdomain.com/images/productify-og.jpg">
+  <meta property="og:url" content="https://yourdomain.com">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+    /* Custom styles for fast loading and responsiveness */
+    body { font-family: 'Inter', sans-serif; }
+    .lazy-img { opacity: 0; transition: opacity 0.3s; }
+    .lazy-img.loaded { opacity: 1; }
+    @media (max-width: 640px) {
+      .hero-section { background-image: url('mobile-hero.jpg'); }
     }
-    </script>
-    
-    <!-- Article Schema for Blog Content -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "Deductify Habit & Wellness Blog",
-        "description": "Daily articles about habit building, cardio exercises, planning strategies, and productivity tips. Learn how to build lasting habits with expert advice.",
-        "url": "https://deductify.org/blogs.html",
-        "publisher": {
-            "@type": "Organization",
-            "name": "Deductify LLC"
-        },
-        "mainEntityOfPage": "https://deductify.org"
-    }
-    </script>
-    
-    <!-- Performance Optimizations -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://apps.apple.com">
-    <link rel="preload" href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" as="document">
-    
-    <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-    
-    <!-- Structured Navigation -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SiteNavigationElement",
-        "name": [
-            "Home",
-            "Productify App",
-            "Habit Blog",
-            "About",
-            "Contact"
-        ]
-    }
-    </script>
-    
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes bounceSubtle {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        @keyframes glow {
-            from { box-shadow: 0 0 20px rgba(79, 70, 229, 0.4); }
-            to { box-shadow: 0 0 30px rgba(79, 70, 229, 0.8); }
-        }
-        .hero-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-    </style>
+  </style>
 </head>
-<body class="font-body bg-gray-50">
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-300" id="navbar">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between py-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
-                        <span class="text-white font-bold text-lg">D</span>
-                    </div>
-                    <div>
-                        <h1 class="font-display font-bold text-xl text-gray-900">Deductify LLC</h1>
-                        <p class="text-xs text-gray-600">Productify Habit Tracker</p>
-                    </div>
-                </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-primary transition-colors font-medium">Home</a>
-                    <a href="#productify" class="text-gray-700 hover:text-primary transition-colors font-medium">Productify App</a>
-                    <div class="relative group">
-                        <a href="blogs.html" class="text-gray-700 hover:text-primary transition-colors font-medium flex items-center">
-                            Habit Blog
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </a>
-                        <div class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all">
-                            <a href="blogs.html#habits" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Habit Building</a>
-                            <a href="blogs.html#cardio" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Cardio & Fitness</a>
-                            <a href="blogs.html#planning" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Daily Planning</a>
-                            <a href="blogs.html#productivity" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Productivity Tips</a></li>
-                        </div>
-                    </div>
-                    <a href="#about" class="text-gray-700 hover:text-primary transition-colors font-medium">About</a>
-                    <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors font-medium">Contact</a>
-                    <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
-                       class="bg-primary hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-semibold transition-all transform hover:scale-105">
-                        Download Productify
-                    </a>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <button class="md:hidden text-gray-700 hover:text-primary transition-colors" id="mobile-menu-btn">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Mobile Menu -->
-            <div class="md:hidden hidden bg-white border-t" id="mobile-menu">
-                <div class="px-2 pt-2 pb-3 space-y-1">
-                    <a href="#home" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">Home</a>
-                    <a href="#productify" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">Productify App</a>
-                    <a href="blogs.html" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">Habit Blog</a>
-                    <a href="#about" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">About</a>
-                    <a href="contact.html" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors">Contact</a>
-                    <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
-                       class="block mx-3 mt-4 bg-primary text-white px-4 py-2 rounded-lg font-semibold text-center">
-                        Download Productify
-                    </a>
-                </div>
-            </div>
+<body class="bg-gray-100">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-md fixed w-full z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <a href="/" class="text-2xl font-bold text-indigo-600">Daily Habits</a>
         </div>
-    </nav>
+        <div class="flex items-center space-x-4">
+          <a href="#blog" class="text-gray-700 hover:text-indigo-600">Blog</a>
+          <a href="#app" class="text-gray-700 hover:text-indigo-600">App</a>
+          <a href="#contact" class="text-gray-700 hover:text-indigo-600">Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-gradient min-h-screen flex items-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-black/20"></div>
-        
-        <!-- Animated Background Elements -->
-        <div class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-bounce-subtle"></div>
-        <div class="absolute bottom-20 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-bounce-subtle" style="animation-delay: 1s;"></div>
-        
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center text-white animate-fade-in">
-                <div class="inline-flex items-center bg-white/20 glass-effect px-6 py-3 rounded-full mb-8">
-                    <span class="text-accent mr-2">⭐</span>
-                    <span class="font-semibold">4.5★ Rating • 500K+ Users • #1 Habit Tracker</span>
-                </div>
-                
-                <h1 class="text-5xl md:text-7xl font-display font-bold mb-6 leading-tight animate-slide-up">
-                    Build Better Habits with
-                    <span class="block bg-gradient-to-r from-accent to-white bg-clip-text text-transparent">
-                        Productify
-                    </span>
-                </h1>
-                
-                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90 animate-slide-up" style="animation-delay: 0.2s;">
-                    The AI-powered habit tracker that helps you build lasting routines. Track streaks, plan your day, and transform your life with smart reminders and beautiful progress visualization.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-slide-up" style="animation-delay: 0.4s;">
-                    <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
-                       class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl">
-                        📱 Download Free on iOS
-                    </a>
-                    <a href="blogs.html" 
-                       class="glass-effect text-white hover:bg-white/20 px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 border border-white/30">
-                        📚 Read Success Stories
-                    </a>
-                </div>
-                
-                <div class="flex justify-center items-center space-x-8 text-white/80 animate-slide-up" style="animation-delay: 0.6s;">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-accent">4.5★</div>
-                        <div class="text-sm">App Store Rating</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-accent">471</div>
-                        <div class="text-sm">User Reviews</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-accent">500K+</div>
-                        <div class="text-sm">Active Users</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-                <div class="w-1 h-3 bg-white/70 rounded-full mt-2"></div>
-            </div>
-        </div>
-    </section>
+  <!-- Hero Section -->
+  <section class="hero-section bg-cover bg-center h-96 flex items-center justify-center text-white" style="background-image: url('hero-bg.jpg')">
+    <div class="text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Build Better Habits Today</h1>
+      <p class="text-lg md:text-xl mb-6">Explore our blog for daily habit tips and download Productify, the AI-powered habit tracker.</p>
+      <a href="https://apps.apple.com/us/app/habit-tracker-ai-habituary/id1389900237" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">Download Productify</a>
+    </div>
+  </section>
 
-    <!-- Productify App Section -->
-    <section id="productify" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-semibold mb-6">
-                    🏆 Featured on App Store • Award-Winning Design
-                </div>
-                <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
-                    Meet Productify
-                    <span class="block text-2xl text-gray-600 font-normal mt-2">Your AI-Powered Habit Companion</span>
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Transform your daily routine with the habit tracker that adapts to your lifestyle and grows with you
-                </p>
-            </div>
-            
-            <!-- App Features Showcase -->
-            <div class="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-3xl p-8 md:p-16 mb-16">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h3 class="text-3xl font-display font-bold text-gray-900 mb-6">
-                            Everything You Need to Build Lasting Habits
-                        </h3>
-                        
-                        <div class="space-y-6 mb-8">
-                            <div class="flex items-start">
-                                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                                    <span class="text-primary text-xl">🤖</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 mb-2">AI Planner & Smart Scheduling</h4>
-                                    <p class="text-gray-600">Intelligent habit planning that adapts to your schedule and suggests optimal times for maximum success</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start">
-                                <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                                    <span class="text-secondary text-xl">📊</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 mb-2">Comprehensive Statistics</h4>
-                                    <p class="text-gray-600">Track daily, weekly, and monthly progress with beautiful charts and detailed insights into your habit patterns</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start">
-                                <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                                    <span class="text-accent text-xl">🔥</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 mb-2">Streak Tracking & Motivation</h4>
-                                    <p class="text-gray-600">Visual streak counters and achievement badges that keep you motivated and celebrate your consistency</p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start">
-                                <div class="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                                    <span class="text-success text-xl">🔔</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 mb-2">Smart Reminders</h4>
-                                    <p class="text-gray-600">Customizable notifications that learn your patterns and remind you at the perfect moment</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
-                               class="bg-primary hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg text-center">
-                                📱 Download Free Now
-                            </a>
-                            <a href="blogs.html#how-to-guides" 
-                               class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-xl font-bold text-lg transition-all text-center">
-                                📖 How-to Guides
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <!-- App Preview -->
-                    <div class="relative">
-                        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm mx-auto animate-glow">
-                            <div class="flex items-center justify-between mb-6">
-                                <h4 class="font-bold text-xl">Today's Habits</h4>
-                                <div class="text-sm bg-green-100 text-green-600 px-3 py-1 rounded-full font-semibold">
-                                    85% Complete
-                                </div>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-200">
-                                    <div class="flex items-center">
-                                        <span class="text-2xl mr-4">🏃‍♂️</span>
-                                        <div>
-                                            <div class="font-semibold text-gray-800">Morning Cardio</div>
-                                            <div class="text-sm text-gray-600">7:00 AM • 30 min</div>
-                                        </div>
-                                    </div>
-                                    <div class="text-green-500 text-2xl">✓</div>
-                                </div>
-                                <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl border border-blue-200">
-                                    <div class="flex items-center">
-                                        <span class="text-2xl mr-4">📝</span>
-                                        <div>
-                                            <div class="font-semibold text-gray-800">Daily Planning</div>
-                                            <div class="text-sm text-gray-600">9:00 AM • 15 min</div>
-                                        </div>
-                                    </div>
-                                    <div class="text-blue-500 text-2xl">✓</div>
-                                </div>
-                                <div class="flex items-center justify-between p-4 bg-yellow-50 rounded-xl border border-yellow-200">
-                                    <div class="flex items-center">
-                                        <span class="text-2xl mr-4">💧</span>
-                                        <div>
-                                            <div class="font-semibold text-gray-800">Hydration</div>
-                                            <div class="text-sm text-gray-600">6/8 glasses today</div>
-                                        </div>
-                                    </div>
-                                    <div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-white text-sm font-bold">6</div>
-                                </div>
-                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
-                                    <div class="flex items-center">
-                                        <span class="text-2xl mr-4">📚</span>
-                                        <div>
-                                            <div class="font-semibold text-gray-800">Reading</div>
-                                            <div class="text-sm text-gray-600">8:00 PM • 20 pages</div>
-                                        </div>
-                                    </div>
-                                    <div class="text-gray-400 text-2xl">○</div>
-                                </div>
-                            </div>
-                            <div class="mt-6 text-center">
-                                <div class="text-2xl font-bold text-primary mb-1">23🔥</div>
-                                <div class="text-sm text-gray-600">Current Streak</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Daily Content Teaser -->
-            <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white text-center mb-16">
-                <h3 class="text-2xl font-bold mb-4">Daily Habit Building Content</h3>
-                <p class="text-lg mb-6 opacity-90">
-                    Get fresh tips, cardio routines, planning strategies, and success stories delivered daily
-                </p>
-                <a href="blogs.html" 
-                   class="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105">
-                    📖 Read Today's Articles
-                </a>
-            </div>
-        </div>
-    </section>
+  <!-- Blog Section -->
+  <section id="blog" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Daily Habits Blog</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Blog Post 1 -->
+        <article class="bg-gray-50 p-6 rounded-lg shadow-md">
+          <img data-src="water-drinking.jpg" alt="Water Drinking Habit" class="lazy-img w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">The Power of Drinking Water Daily</h3>
+          <p class="text-gray-600 mb-4">Learn how staying hydrated can boost your energy, improve focus, and enhance your overall health.</p>
+          <a href="/blog/water-drinking" class="text-indigo-600 hover:underline">Read More</a>
+        </article>
+        <!-- Blog Post 2 -->
+        <article class="bg-gray-50 p-6 rounded-lg shadow-md">
+          <img data-src="walking.jpg" alt="Walking Habit" class="lazy-img w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Why Walking 10,000 Steps Matters</h3>
+          <p class="text-gray-600 mb-4">Discover the benefits of walking for physical health, mental clarity, and stress reduction.</p>
+          <a href="/blog/walking.html" class="text-indigo-600 hover:underline">Read More</a>
+        </article>
+        <!-- Blog Post 3 -->
+        <article class="bg-gray-50 p-6 rounded-lg shadow-md">
+          <img data-src="morning-routine.jpg" alt="Morning Routine" class="lazy-img w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Crafting a Productive Morning Routine</h3>
+          <p class="text-gray-600 mb-4">Start your day right with habits that set you up for success and productivity.</p>
+          <a href="/blog/morning-routine" class="text-indigo-600 hover:underline">Read More</a>
+        </article>
+      </div>
+    </div>
+  </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
-                        About Deductify LLC
-                    </h2>
-                    <div class="w-16 h-1 bg-gradient-to-r from-primary to-secondary mb-8"></div>
-                    <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-                        Founded with a mission to make habit building effortless and enjoyable, Deductify LLC created Productify to help people transform their lives through consistent, positive actions.
-                    </p>
-                    <p class="text-lg text-gray-700 mb-8 leading-relaxed">
-                        Our award-winning app combines behavioral psychology with cutting-edge technology to create the most effective habit tracking experience available on iOS.
-                    </p>
-                    
-                    <div class="grid grid-cols-2 gap-6 mb-8">
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-primary mb-2">4.5★</div>
-                            <div class="text-gray-600">App Store Rating</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-secondary mb-2">471</div>
-                            <div class="text-gray-600">User Reviews</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-accent mb-2">500K+</div>
-                            <div class="text-gray-600">Downloads</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-success mb-2">50M+</div>
-                            <div class="text-gray-600">Habits Tracked</div>
-                        </div>
-                    </div>
-                    
-                    <a href="contact.html" 
-                       class="inline-flex items-center bg-primary hover:bg-indigo-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105">
-                        Contact Us →
-                    </a>
-                </div>
-                
-                <div class="relative">
-                    <div class="bg-white rounded-3xl shadow-2xl p-8">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Why Choose Productify?</h3>
-                        <div class="space-y-6">
-                            <div class="flex items-start">
-                                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                                    <span class="text-primary text-xl">🧠</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 mb-2">Science-Based Design</h4>
-                                    <p class="text-gray-600">Built on proven behavioral psychology principles</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                                    <span class="text-secondary text-xl">🔒</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 mb-2">Privacy First</h4>
-                                    <p class="text-gray-600">Your data stays on your device and iCloud only</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                                    <span class="text-accent text-xl">⚡</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-900 mb-2">Lightning Fast</h4>
-                                    <p class="text-gray-600">Ad-free experience with instant habit logging</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- App Section -->
+  <section id="app" class="py-16 bg-indigo-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2">
+          <h2 class="text-3xl font-bold text-gray-800 mb-4">Productify - AI Habit Tracker</h2>
+          <p class="text-gray-600 mb-6">Transform your routine with Productify, the ultimate AI-powered habit tracker. Track your daily habits, set reminders, and achieve your goals with ease. Available now on the App Store!</p>
+          <a href="https://apps.apple.com/us/app/habit-tracker-ai-habituary/id1389900237" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">Download on the App Store</a>
         </div>
-    </section>
-
-    <!-- User Testimonials -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
-                    Real Users, Real Results
-                </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    See how Productify has transformed the lives of over 500,000 users worldwide
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-8 border border-primary/10">
-                    <div class="text-yellow-500 text-2xl mb-4">★★★★★</div>
-                    <blockquote class="text-gray-700 mb-6 text-lg leading-relaxed">
-                        "Productify completely changed how I approach my daily routine. I've maintained a 90-day cardio streak and feel more energized than ever!"
-                    </blockquote>
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold mr-4">
-                            S
-                        </div>
-                        <div>
-                            <div class="font-bold text-gray-900">Sarah M.</div>
-                            <div class="text-gray-600">Fitness Enthusiast</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gradient-to-br from-secondary/5 to-accent/5 rounded-2xl p-8 border border-secondary/10">
-                    <div class="text-yellow-500 text-2xl mb-4">★★★★★</div>
-                    <blockquote class="text-gray-700 mb-6 text-lg leading-relaxed">
-                        "The AI planner feature is incredible. It suggests the perfect times for my habits and I actually stick to them!"
-                    </blockquote>
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-bold mr-4">
-                            M
-                        </div>
-                        <div>
-                            <div class="font-bold text-gray-900">Mike D.</div>
-                            <div class="text-gray-600">Productivity Coach</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gradient-to-br from-accent/5 to-success/5 rounded-2xl p-8 border border-accent/10">
-                    <div class="text-yellow-500 text-2xl mb-4">★★★★★</div>
-                    <blockquote class="text-gray-700 mb-6 text-lg leading-relaxed">
-                        "Beautiful design and the streak tracking keeps me motivated. Best habit app I've ever used!"
-                    </blockquote>
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white font-bold mr-4">
-                            E
-                        </div>
-                        <div>
-                            <div class="font-bold text-gray-900">Emma R.</div>
-                            <div class="text-gray-600">Student</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="md:w-1/2 mt-6 md:mt-0">
+          <img data-src="productify-app.jpg" alt="Productify App Screenshot" class="lazy-img w-full rounded-lg shadow-md">
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-r from-primary to-secondary">
-        <div class="container mx-auto px-4 text-center">
-            <div class="max-w-3xl mx-auto text-white">
-                <h2 class="text-4xl md:text-5xl font-display font-bold mb-6">
-                    Start Building Better Habits Today
-                </h2>
-                <p class="text-xl mb-8 opacity-90">
-                    Join 500,000+ users who have transformed their lives with Productify. Download free and start your habit journey in less than 2 minutes.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-                    <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
-                       class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-xl">
-                        📱 Download Productify Free
-                    </a>
-                    <a href="blogs.html" 
-                       class="glass-effect text-white hover:bg-white/20 px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 border border-white/30">
-                        📚 Read Success Stories
-                    </a>
-                </div>
-                
-                <div class="text-white/80 text-sm">
-                    ✅ Free forever • ⚡ Setup in 2 minutes • 🔒 Privacy guaranteed
-                </div>
-            </div>
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Get in Touch</h2>
+      <p class="text-gray-600 mb-6 text-center">Have questions or feedback? Reach out to us!</p>
+      <div class="max-w-md mx-auto">
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700">Email</label>
+          <input type="email" id="email" class="w-full p-2 border rounded-md" placeholder="your@email.com">
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-16">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center">
-                            <span class="text-white font-bold text-lg">D</span>
-                        </div>
-                        <div>
-                            <div class="font-display font-bold text-xl">Deductify LLC</div>
-                            <div class="text-sm text-gray-400">Productify Habit Tracker</div>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 mb-4">
-                        Transform your life with better habits. Join 500K+ users building lasting routines with Productify.
-                    </p>
-                    <a href="https://apps.apple.com/us/app/habit-tracker-productify/id1389900237" 
-                       class="inline-flex items-center text-primary hover:text-secondary transition-colors">
-                        Download on App Store →
-                    </a>
-                </div>
-                
-                <div>
-                    <h4 class="font-semibold mb-4">Product</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#productify" class="hover:text-white transition">Productify App</a></li>
-                        <li><a href="blogs.html#features" class="hover:text-white transition">Features</a></li>
-                        <li><a href="blogs.html#how-to-guides" class="hover:text-white transition">How-to Guides</a></li>
-                        <li><a href="blogs.html#success-stories" class="hover:text-white transition">Success Stories</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-semibold mb-4">Content</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="blogs.html#habits" class="hover:text-white transition">Habit Building</a></li>
-                        <li><a href="blogs.html#cardio" class="hover:text-white transition">Cardio & Fitness</a></li>
-                        <li><a href="blogs.html#planning" class="hover:text-white transition">Daily Planning</a></li>
-                        <li><a href="blogs.html#productivity" class="hover:text-white transition">Productivity Tips</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-semibold mb-4">Support</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
-                        <li><a href="mailto:contact@deductify.org" class="hover:text-white transition">Email Support</a></li>
-                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 pt-8 text-center">
-                <p class="text-gray-400">© 2024 Deductify LLC. All rights reserved.</p>
-                <p class="text-gray-400 mt-2">
-                    Productify Habit Tracker - Build better habits, transform your life.
-                </p>
-            </div>
+        <div class="mb-4">
+          <label for="message" class="block text-gray-700">Message</label>
+          <textarea id="message" class="w-full p-2 border rounded-md" rows="4" placeholder="Your message"></textarea>
         </div>
-    </footer>
+        <button onclick="alert('Form submission is disabled in this demo.')" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 w-full">Send Message</button>
+      </div>
+    </div>
+  </section>
 
-    <!-- JavaScript -->
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p>© 2025 Daily Habits. All rights reserved.</p>
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="https://twitter.com/productifyapp" class="hover:text-indigo-400">Twitter</a>
+          <a href="https://facebook.com/productifyapp" class="hover:text-indigo-400">Facebook</a>
+          <a href="https://instagram.com/productifyapp" class="hover:text-indigo-400">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript for Lazy Loading Images -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = document.querySelectorAll('.lazy-img');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.classList.add('loaded');
+            observer.unobserve(img);
+          }
         });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Navbar background on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 100) {
-                navbar.classList.add('bg-white/95');
-            } else {
-                navbar.classList.remove('bg-white/95');
-            }
-        });
-
-        // Add loading animation for app store links
-        document.querySelectorAll('a[href*="apps.apple.com"]').forEach(link => {
-            link.addEventListener('click', function() {
-                // Track app store clicks
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'app_store_click', {
-                        'event_category': 'engagement',
-                        'event_label': 'productify_download'
-                    });
-                }
-            });
-        });
-    </script>
+      });
+      images.forEach(img => observer.observe(img));
+    });
+  </script>
 </body>
 </html>
